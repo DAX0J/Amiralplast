@@ -6,6 +6,8 @@ export interface OrderData {
   fullName: string;
   phone: string;
   altPhone?: string;
+  cupType: string;
+  unit: 'bag' | 'carton';
   wilaya: string;
   baladia: string;
   deliveryType: 'office' | 'home';
@@ -14,6 +16,10 @@ export interface OrderData {
   totalPrice: number;
   productPrice: number;
   deliveryPrice: number;
+  effectiveBags: number;
+  totalCups: number;
+  pricingTier: string;
+  cupTypeArabic: string;
   fingerprint?: string;
 }
 
