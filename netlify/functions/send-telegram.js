@@ -43,17 +43,25 @@ exports.handler = async (event, context) => {
     // Generate order ID
     const orderId = `ORDER-${Date.now()}`;
 
-    // Create message
-    const message = `🛒 طلب جديد - زيت لبان الذكر
+    // Create message for cupping cups
+    const message = `🥄 طلب جديد - كؤوس الحجامة أميرال بلاست
 
 👤 الاسم: ${orderData.fullName || ''}
 📱 الهاتف: ${orderData.phone || ''}
 📱 هاتف بديل: ${orderData.altPhone || 'غير محدد'}
 📍 الولاية: ${orderData.wilaya || ''}
 🏘️ البلدية: ${orderData.baladia || ''}
-🚚 نوع التوصيل: ${orderData.deliveryType === 'home' ? 'منزلي' : 'مكتبي'}
-📦 الكمية: ${orderData.quantity || 0}
-💰 السعر الإجمالي: ${orderData.totalPrice || 0} دج
+
+🥄 نوع الكؤوس: ${orderData.cupTypeArabic || orderData.cupType || 'غير محدد'}
+📦 الوحدة: ${orderData.unit === 'bag' ? 'كيس' : orderData.unit === 'carton' ? 'كرتون' : orderData.unit || 'غير محدد'}
+🔢 الكمية المطلوبة: ${orderData.quantity || 0} ${orderData.unit === 'bag' ? 'كيس' : orderData.unit === 'carton' ? 'كرتون' : 'وحدة'}
+📊 إجمالي الأكياس: ${orderData.effectiveBags || 0} كيس
+🥄 إجمالي الكؤوس: ${orderData.totalCups || 0} كأس
+📈 نوع السعر: ${orderData.pricingTier || 'غير محدد'}
+
+💰 سعر المنتج: ${orderData.productPrice || orderData.totalPrice || 0} دج
+🚚 رسوم التوصيل: ${orderData.deliveryPrice || 0} دج ${orderData.deliveryPrice === 0 ? '(مجاني ✅)' : ''}
+💳 المجموع النهائي: ${orderData.totalPrice || 0} دج
 📝 ملاحظات: ${orderData.notes || 'لا توجد'}
 
 ⏰ الوقت: ${new Date().toLocaleString('ar-DZ')}

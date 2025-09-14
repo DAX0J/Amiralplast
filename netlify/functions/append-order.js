@@ -64,7 +64,7 @@ exports.handler = async (event, context) => {
       orderData.altPhone || '',
       orderData.wilaya || '',
       orderData.baladia || '',
-      orderData.deliveryType === 'home' ? 'منزلي' : 'مكتبي',
+      'توصيل مجاني', // Delivery is always free
       orderData.quantity || 0,
       orderData.totalPrice || 0,
       orderData.notes || ''

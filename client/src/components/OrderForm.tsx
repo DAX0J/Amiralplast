@@ -8,14 +8,14 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Minus, Plus, Loader2, Sparkles, Heart, Star, ShoppingCart } from 'lucide-react';
 import { useOrderForm } from '@/hooks/useOrderForm';
-import { type WilayaName, WILAYAS, hasOfficeDelivery, getOfficeDeliveryText } from '@/data/deliveryPrices';
+import { type WilayaName, WILAYAS } from '@/data/deliveryPrices';
 import { getAvailableVariants, UNITS, formatPrice, type UnitId } from '@/data/productPricing';
 
 export default function OrderForm() {
   const { form, isSubmitting, showSuccess, rateLimited, onSubmit, calculateTotal, getEffectiveBagsCount, getCurrentPricingTier, getTotalCups } = useOrderForm();
 
   const watchedValues = form.watch();
-  const { cupType, unit, wilaya, deliveryType, quantity } = watchedValues;
+  const { cupType, unit, wilaya, quantity } = watchedValues;
 
   // Calculate prices using the new pricing structure
   const productPrice = calculateTotal(cupType, unit, quantity);
@@ -211,11 +211,101 @@ export default function OrderForm() {
                 />
               </motion.div>
 
-              {/* Cup Type Selection - NEW FIELD */}
+              {/* Enhanced Wilaya Selection */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
+                whileHover={{ scale: 1.01 }}
+              >
+                <FormField
+                  control={form.control}
+                  name="wilaya"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-lg font-semibold text-gray-800 font-arabic flex items-center gap-2">
+                        🌍 الولاية *
+                        <motion.span 
+                          className="text-xs bg-primary-red text-white px-2 py-1 rounded-full"
+                          animate={{ scale: [1, 1.1, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          مطلوب
+                        </motion.span>
+                      </FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <motion.div
+                            whileFocus={{ scale: 1.02, boxShadow: "0 8px 25px rgba(220, 38, 38, 0.15)" }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <SelectTrigger 
+                              className="form-field text-lg h-14 rounded-2xl border-2 font-arabic bg-gradient-to-r from-white to-warm-beige/5 hover:from-warm-beige/10 hover:to-white transition-all duration-300 hover:shadow-lg"
+                              data-testid="select-wilaya"
+                            >
+                              <SelectValue placeholder="اختر ولايتك للتوصيل السريع 🚚" />
+                            </SelectTrigger>
+                          </motion.div>
+                        </FormControl>
+                        <SelectContent className="font-arabic max-h-60">
+                          {WILAYAS.map((wilaya, index) => (
+                            <motion.div
+                              key={wilaya}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.02 }}
+                            >
+                              <SelectItem value={wilaya} className="font-arabic hover:bg-warm-beige/20 transition-colors">
+                                {wilaya}
+                              </SelectItem>
+                            </motion.div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage className="text-primary-red font-arabic" />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
+
+              {/* Enhanced Baladia */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+              >
+                <FormField
+                  control={form.control}
+                  name="baladia"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-lg font-semibold text-gray-800 font-arabic flex items-center gap-2">
+                        🏘️ البلدية *
+                      </FormLabel>
+                      <FormControl>
+                        <motion.div
+                          whileFocus={{ scale: 1.02 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Input 
+                            {...field} 
+                            placeholder="أدخل اسم البلدية الخاصة بك"
+                            className="form-field text-lg h-14 rounded-2xl border-2 font-arabic bg-gradient-to-r from-white to-warm-beige/5 focus:from-warm-beige/10 focus:to-white transition-all duration-300 hover:shadow-md"
+                            data-testid="input-baladia"
+                          />
+                        </motion.div>
+                      </FormControl>
+                      <FormMessage className="text-primary-red font-arabic" />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
+
+              {/* Cup Type Selection - NEW FIELD */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
                 whileHover={{ scale: 1.01 }}
               >
                 <FormField
@@ -272,7 +362,7 @@ export default function OrderForm() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.7 }}
+                transition={{ duration: 0.5, delay: 0.9 }}
               >
                 <FormField
                   control={form.control}
@@ -367,7 +457,7 @@ export default function OrderForm() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.8 }}
+                transition={{ duration: 0.5, delay: 1.0 }}
               >
                 <FormField
                   control={form.control}
@@ -443,275 +533,6 @@ export default function OrderForm() {
                 />
               </motion.div>
 
-              {/* Enhanced Wilaya Selection */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.9 }}
-                whileHover={{ scale: 1.01 }}
-              >
-                <FormField
-                  control={form.control}
-                  name="wilaya"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-lg font-semibold text-gray-800 font-arabic flex items-center gap-2">
-                        🌍 الولاية *
-                        <motion.span 
-                          className="text-xs bg-primary-red text-white px-2 py-1 rounded-full"
-                          animate={{ scale: [1, 1.1, 1] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        >
-                          مطلوب
-                        </motion.span>
-                      </FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <motion.div
-                            whileFocus={{ scale: 1.02, boxShadow: "0 8px 25px rgba(220, 38, 38, 0.15)" }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <SelectTrigger 
-                              className="form-field text-lg h-14 rounded-2xl border-2 font-arabic bg-gradient-to-r from-white to-warm-beige/5 hover:from-warm-beige/10 hover:to-white transition-all duration-300 hover:shadow-lg"
-                              data-testid="select-wilaya"
-                            >
-                              <SelectValue placeholder="اختر ولايتك للتوصيل السريع 🚚" />
-                            </SelectTrigger>
-                          </motion.div>
-                        </FormControl>
-                        <SelectContent className="font-arabic max-h-60">
-                          {WILAYAS.map((wilaya, index) => (
-                            <motion.div
-                              key={wilaya}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: index * 0.02 }}
-                            >
-                              <SelectItem value={wilaya} className="font-arabic hover:bg-warm-beige/20 transition-colors">
-                                {wilaya}
-                              </SelectItem>
-                            </motion.div>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage className="text-primary-red font-arabic" />
-                    </FormItem>
-                  )}
-                />
-              </motion.div>
-
-              {/* Enhanced Baladia */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1.0 }}
-              >
-                <FormField
-                  control={form.control}
-                  name="baladia"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-lg font-semibold text-gray-800 font-arabic flex items-center gap-2">
-                        🏘️ البلدية *
-                      </FormLabel>
-                      <FormControl>
-                        <motion.div
-                          whileFocus={{ scale: 1.02 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <Input 
-                            {...field} 
-                            placeholder="أدخل اسم البلدية الخاصة بك"
-                            className="form-field text-lg h-14 rounded-2xl border-2 font-arabic bg-gradient-to-r from-white to-warm-beige/5 focus:from-warm-beige/10 focus:to-white transition-all duration-300 hover:shadow-md"
-                            data-testid="input-baladia"
-                          />
-                        </motion.div>
-                      </FormControl>
-                      <FormMessage className="text-primary-red font-arabic" />
-                    </FormItem>
-                  )}
-                />
-              </motion.div>
-
-              {/* Enhanced Delivery Type with Free Delivery */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1.1 }}
-              >
-                <FormField
-                  control={form.control}
-                  name="deliveryType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-lg font-semibold text-gray-800 font-arabic flex items-center gap-2">
-                        🚚 نوع التوصيل *
-                        <motion.span 
-                          className="text-xs bg-green-500 text-white px-2 py-1 rounded-full"
-                          animate={{ scale: [1, 1.1, 1] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        >
-                          توصيل مجاني
-                        </motion.span>
-                      </FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          value={field.value}
-                          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-                          data-testid="radio-deliveryType"
-                        >
-                          {/* Office Delivery Option - Hide if not available */}
-                          {(!wilaya || hasOfficeDelivery(wilaya as WilayaName)) ? (
-                            <motion.div
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              transition={{ type: "spring", stiffness: 300 }}
-                            >
-                              <RadioGroupItem value="office" id="office" className="peer sr-only" />
-                              <Label 
-                                htmlFor="office" 
-                                className={`relative form-field border-2 rounded-2xl p-6 cursor-pointer block transition-all duration-300 hover:shadow-lg ${
-                                  field.value === 'office' 
-                                    ? 'border-primary-red bg-primary-red/10 shadow-lg' 
-                                    : 'border-gray-200 bg-white hover:border-warm-beige hover:bg-warm-beige/5'
-                                }`}
-                              >
-                                {/* Selection Indicator */}
-                                {field.value === 'office' && (
-                                  <motion.div
-                                    className="absolute top-3 right-3 w-6 h-6 bg-primary-red rounded-full flex items-center justify-center"
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    transition={{ type: "spring", stiffness: 400 }}
-                                  >
-                                    <motion.span
-                                      className="text-white text-sm font-bold"
-                                      initial={{ opacity: 0 }}
-                                      animate={{ opacity: 1 }}
-                                      transition={{ delay: 0.1 }}
-                                    >
-                                      ✓
-                                    </motion.span>
-                                  </motion.div>
-                                )}
-
-                                <div className="text-center">
-                                  <motion.div
-                                    className="text-4xl mb-3"
-                                    animate={{ rotate: field.value === 'office' ? [0, 10, 0] : 0 }}
-                                    transition={{ duration: 0.5 }}
-                                  >
-                                    🏢
-                                  </motion.div>
-                                  <h3 className="font-semibold text-lg mb-2 font-arabic">التوصيل للمكتب</h3>
-                                  <motion.p 
-                                    className="text-2xl font-bold text-green-600 mb-2"
-                                    animate={{ 
-                                      scale: field.value === 'office' ? [1, 1.1, 1] : 1,
-                                      color: field.value === 'office' ? '#16a34a' : '#16a34a'
-                                    }}
-                                    transition={{ duration: 0.3 }}
-                                  >
-                                    مجاني
-                                  </motion.p>
-                                  <p className="text-sm text-gray-600 font-arabic">استلام من مكتب البريد</p>
-                                  <motion.div
-                                    className="mt-2 text-xs text-blue-600 font-arabic"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: field.value === 'office' ? 1 : 0.7 }}
-                                    transition={{ duration: 0.3 }}
-                                  >
-                                    ⚡ أسرع للاستلام
-                                  </motion.div>
-                                </div>
-                              </Label>
-                            </motion.div>
-                          ) : (
-                            <motion.div
-                              initial={{ opacity: 0.5 }}
-                              animate={{ opacity: 0.5 }}
-                              className="border-2 border-gray-300 rounded-2xl p-6 bg-gray-100"
-                            >
-                              <div className="text-center">
-                                <div className="text-4xl mb-3 opacity-50">🏢</div>
-                                <h3 className="font-semibold text-lg mb-2 font-arabic text-gray-500">التوصيل للمكتب</h3>
-                                <p className="text-xl font-bold text-gray-500 mb-2">لا يوجد مكتب</p>
-                                <p className="text-sm text-gray-500 font-arabic">غير متوفر في هذه الولاية</p>
-                              </div>
-                            </motion.div>
-                          )}
-
-                          <motion.div
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            transition={{ type: "spring", stiffness: 300 }}
-                          >
-                            <RadioGroupItem value="home" id="home" className="peer sr-only" />
-                            <Label 
-                              htmlFor="home" 
-                              className={`relative form-field border-2 rounded-2xl p-6 cursor-pointer block transition-all duration-300 hover:shadow-lg ${
-                                field.value === 'home' 
-                                  ? 'border-primary-red bg-primary-red/10 shadow-lg' 
-                                  : 'border-gray-200 bg-white hover:border-warm-beige hover:bg-warm-beige/5'
-                              }`}
-                            >
-                              {/* Selection Indicator */}
-                              {field.value === 'home' && (
-                                <motion.div
-                                  className="absolute top-3 right-3 w-6 h-6 bg-primary-red rounded-full flex items-center justify-center"
-                                  initial={{ scale: 0 }}
-                                  animate={{ scale: 1 }}
-                                  transition={{ type: "spring", stiffness: 400 }}
-                                >
-                                  <motion.span
-                                    className="text-white text-sm"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.1 }}
-                                  >
-                                    ✓
-                                  </motion.span>
-                                </motion.div>
-                              )}
-
-                              <div className="text-center">
-                                <motion.div
-                                  className="text-4xl mb-3"
-                                  animate={{ rotate: field.value === 'home' ? [0, 10, 0] : 0 }}
-                                  transition={{ duration: 0.5 }}
-                                >
-                                  🏠
-                                </motion.div>
-                                <h3 className="font-semibold text-lg mb-2 font-arabic">التوصيل للمنزل</h3>
-                                <motion.p 
-                                  className="text-2xl font-bold text-green-600 mb-2"
-                                  animate={{ 
-                                    scale: field.value === 'home' ? [1, 1.1, 1] : 1,
-                                    color: field.value === 'home' ? '#16a34a' : '#16a34a'
-                                  }}
-                                  transition={{ duration: 0.3 }}
-                                >
-                                  مجاني
-                                </motion.p>
-                                <p className="text-sm text-gray-600 font-arabic">يصل لباب المنزل</p>
-                                <motion.div
-                                  className="mt-2 text-xs text-blue-600 font-arabic"
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: field.value === 'home' ? 1 : 0.7 }}
-                                >
-                                  🏃‍♂️ راحة أكثر!
-                                </motion.div>
-                              </div>
-                            </Label>
-                          </motion.div>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage className="text-primary-red font-arabic" />
-                    </FormItem>
-                  )}
-                />
-              </motion.div>
 
               {/* Notes Section */}
               <motion.div

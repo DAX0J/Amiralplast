@@ -10,7 +10,6 @@ export interface OrderData {
   unit: 'bag' | 'carton';
   wilaya: string;
   baladia: string;
-  deliveryType: 'office' | 'home';
   quantity: number;
   notes?: string;
   totalPrice: number;

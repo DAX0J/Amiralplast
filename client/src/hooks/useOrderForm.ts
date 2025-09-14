@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { type WilayaName, hasOfficeDelivery } from '@/data/deliveryPrices';
+import { type WilayaName } from '@/data/deliveryPrices';
 import { 
   PRODUCT_VARIANTS, 
   UNITS, 
@@ -36,7 +36,6 @@ const formSchema = z.object({
   }),
   wilaya: z.string().min(1, 'الولاية مطلوبة'),
   baladia: z.string().min(1, 'البلدية مطلوبة'),
-  deliveryType: z.enum(['office', 'home']),
   quantity: z.number().min(1, 'الكمية يجب أن تكون 1 على الأقل').max(1000, 'الكمية لا يمكن أن تكون أكثر من 1000'),
   notes: z.string().optional()
 });
@@ -75,7 +74,6 @@ export function useOrderForm() {
       unit: 'bag',
       wilaya: '',
       baladia: '',
-      deliveryType: 'home',
       quantity: 1,
       notes: ''
     }
@@ -161,7 +159,6 @@ export function useOrderForm() {
         unit: data.unit,
         wilaya: data.wilaya,
         baladia: data.baladia,
-        deliveryType: data.deliveryType,
         quantity: data.quantity,
         notes: data.notes,
         totalPrice: totalPrice,
