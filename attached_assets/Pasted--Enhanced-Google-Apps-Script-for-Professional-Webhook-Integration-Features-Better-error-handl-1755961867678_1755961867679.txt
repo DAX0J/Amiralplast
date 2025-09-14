@@ -1,0 +1,495 @@
+// Enhanced Google Apps Script for Professional Webhook Integration
+// Features: Better error handling, validation, logging, and CORS support
+
+// ⚠️ CONFIGURATION - يجب تغيير هذه القيم ⚠️
+const CONFIG = {
+  // استبدل هذا بـ ID الجدول الحقيقي
+  SPREADSHEET_ID: "1EJ_GWcCZf1U245SfPm6aiKm8zhl_sQupW34dEfausMHR8FVYJkft-Rgt", // 🔴 مطلوب تغيير هذا!
+
+  // اسم الورقة في الجدول
+  SHEET_NAME: "الطلبات",
+
+  // إعدادات الأمان
+  ENABLE_CORS: true,
+  ENABLE_LOGGING: true,
+  MAX_PAYLOAD_SIZE: 10000, // bytes
+
+  // إعدادات التحقق
+  REQUIRED_FIELDS: [
+    "fullName",
+    "phone",
+    "wilaya",
+    "baladia",
+    "deliveryType",
+    "quantity",
+    "totalPrice",
+  ],
+};
+
+/**
+ * Main webhook handler - enhanced with professional error handling
+ */
+function doPost(e) {
+  try {
+    // Set CORS headers for better browser compatibility
+    if (CONFIG.ENABLE_CORS) {
+      setCORSHeaders();
+    }
+
+    logInfo("📥 Received webhook request");
+
+    // Validate and parse request
+    const requestData = validateAndParseRequest(e);
+    if (!requestData.success) {
+      return createErrorResponse(requestData.error, 400);
+    }
+
+    // Process the order
+    const result = processOrder(requestData.data);
+    if (!result.success) {
+      return createErrorResponse(result.error, 500);
+    }
+
+    // Success response
+    logInfo("✅ Order processed successfully");
+    return createSuccessResponse(result.data);
+  } catch (error) {
+    logError("💥 Unexpected error in doPost:", error);
+    return createErrorResponse(
+      "Internal server error: " + error.toString(),
+      500,
+    );
+  }
+}
+
+/**
+ * Validate and parse incoming request
+ */
+function validateAndParseRequest(e) {
+  try {
+    // Check if request has data
+    if (!e || !e.postData || !e.postData.contents) {
+      return { success: false, error: "No data received" };
+    }
+
+    // Check payload size
+    if (e.postData.contents.length > CONFIG.MAX_PAYLOAD_SIZE) {
+      return { success: false, error: "Payload too large" };
+    }
+
+    // Parse JSON  
+    let data;
+    try {
+      data = JSON.parse(e.postData.contents);
+    } catch (parseError) {
+      return {
+        success: false,
+        error: "Invalid JSON format: " + parseError.toString(),
+      };
+    }
+
+    // Validate required fields
+    const missingFields = CONFIG.REQUIRED_FIELDS.filter(
+      (field) => !data[field],
+    );
+    if (missingFields.length > 0) {
+      return {
+        success: false,
+        error: "Missing required fields: " + missingFields.join(", "),
+      };
+    }
+
+    // Validate phone number format
+    if (!isValidAlgerianPhone(data.phone)) {
+      return { success: false, error: "Invalid phone number format" };
+    }
+
+    // Validate quantity
+    if (data.quantity < 1 || data.quantity > 50) {
+      return { success: false, error: "Invalid quantity (must be 1-50)" };
+    }
+
+    logInfo("✅ Request validation passed");
+    return { success: true, data: data };
+  } catch (error) {
+    return { success: false, error: "Validation error: " + error.toString() };
+  }
+}
+
+/**
+ * Process order and save to Google Sheets
+ */
+function processOrder(data) {
+  try {
+    // Check configuration
+    if (CONFIG.SPREADSHEET_ID === "YOUR_SPREADSHEET_ID") {
+      return { success: false, error: "Spreadsheet ID not configured" };
+    }
+
+    // Open spreadsheet
+    let spreadsheet;
+    try {
+      spreadsheet = SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID);
+    } catch (error) {
+      return {
+        success: false,
+        error: "Cannot access spreadsheet: " + error.toString(),
+      };
+    }
+
+    // Get or create sheet
+    let sheet = spreadsheet.getSheetByName(CONFIG.SHEET_NAME);
+    if (!sheet) {
+      sheet = spreadsheet.insertSheet(CONFIG.SHEET_NAME);
+      logInfo("📊 Created new sheet: " + CONFIG.SHEET_NAME);
+    }
+
+    // Initialize headers if needed
+    if (sheet.getLastRow() === 0) {
+      initializeHeaders(sheet);
+    }
+
+    // Generate order ID and timestamp
+    const timestamp = new Date();
+    const orderId = generateOrderId();
+
+    // Prepare row data with enhanced formatting
+    const rowData = [
+      timestamp.toLocaleString("ar-DZ"), // التاريخ والوقت
+      orderId, // معرف الطلب
+      sanitizeText(data.fullName), // الاسم الكامل
+      data.phone, // الهاتف
+      data.altPhone || "", // الهاتف الثاني
+      sanitizeText(data.wilaya), // الولاية
+      sanitizeText(data.baladia), // البلدية
+      data.deliveryType === "home" ? "للمنزل" : "للمكتب", // نوع التوصيل
+      data.quantity, // الكمية
+      data.productPrice + " دج", // سعر المنتج
+      data.deliveryPrice + " دج", // سعر التوصيل
+      data.totalPrice + " دج", // المجموع الكلي
+      sanitizeText(data.notes || ""), // الملاحظات
+      data.fingerprint || "", // البصمة الرقمية
+      "قيد المعالجة", // الحالة
+      timestamp.toISOString(), // ISO Timestamp
+    ];
+
+    // Add row to sheet
+    sheet.appendRow(rowData);
+
+    // Format the new row
+    formatNewRow(sheet, sheet.getLastRow());
+
+    logInfo("📝 Order added to sheet successfully");
+
+    return {
+      success: true,
+      data: {
+        orderId: orderId,
+        timestamp: timestamp.toISOString(),
+        rowNumber: sheet.getLastRow(),
+      },
+    };
+  } catch (error) {
+    return { success: false, error: "Processing error: " + error.toString() };
+  }
+}
+
+/**
+ * Initialize sheet headers
+ */
+function initializeHeaders(sheet) {
+  const headers = [
+    "التاريخ والوقت",
+    "معرف الطلب",
+    "الاسم الكامل",
+    "الهاتف",
+    "الهاتف الثاني",
+    "الولاية",
+    "البلدية",
+    "نوع التوصيل",
+    "الكمية",
+    "سعر المنتج",
+    "سعر التوصيل",
+    "المجموع الكلي",
+    "الملاحظات",
+    "البصمة الرقمية",
+    "الحالة",
+    "ISO Timestamp",
+  ];
+
+  sheet.appendRow(headers);
+
+  // Format headers
+  const headerRange = sheet.getRange(1, 1, 1, headers.length);
+  headerRange.setFontWeight("bold");
+  headerRange.setBackground("#f0f0f0");
+  headerRange.setHorizontalAlignment("center");
+
+  // Auto-resize columns
+  sheet.autoResizeColumns(1, headers.length);
+
+  logInfo("📋 Headers initialized");
+}
+
+/**
+ * Format newly added row
+ */
+function formatNewRow(sheet, rowNumber) {
+  try {
+    const range = sheet.getRange(rowNumber, 1, 1, sheet.getLastColumn());
+
+    // Alternate row colors for better readability
+    if (rowNumber % 2 === 0) {
+      range.setBackground("#f9f9f9");
+    }
+
+    // Center align numeric columns
+    const numericColumns = [9, 10, 11, 12]; // Quantity, prices
+    numericColumns.forEach((col) => {
+      if (col <= sheet.getLastColumn()) {
+        sheet.getRange(rowNumber, col).setHorizontalAlignment("center");
+      }
+    });
+  } catch (error) {
+    logError("Formatting error:", error);
+    // Non-critical error, continue
+  }
+}
+
+/**
+ * Generate unique order ID
+ */
+function generateOrderId() {
+  const timestamp = Date.now();
+  const random = Math.random().toString(36).substr(2, 5).toUpperCase();
+  return `ORD-${timestamp}-${random}`;
+}
+
+/**
+ * Validate Algerian phone number
+ */
+function isValidAlgerianPhone(phone) {
+  const phoneRegex = /^(077|055|066)\d{7}$/;
+  return phoneRegex.test(phone);
+}
+
+/**
+ * Sanitize text input to prevent injection
+ */
+function sanitizeText(text) {
+  if (typeof text !== "string") return "";
+  return text.replace(/[<>&"']/g, "").substring(0, 200);
+}
+
+/**
+ * Set CORS headers for browser compatibility
+ */
+function setCORSHeaders() {
+  // Note: Google Apps Script automatically handles CORS for web apps
+  // This function is for reference and future enhancements
+}
+
+/**
+ * Create success response
+ */
+function createSuccessResponse(data) {
+  const response = {
+    success: true,
+    orderId: data.orderId,
+    timestamp: data.timestamp,
+    message: "Order added to Google Sheets successfully",
+  };
+
+  return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(
+    ContentService.MimeType.JSON,
+  );
+}
+
+/**
+ * Create error response
+ */
+function createErrorResponse(message, statusCode = 400) {
+  const response = {
+    success: false,
+    error: message,
+    timestamp: new Date().toISOString(),
+  };
+
+  // Note: Google Apps Script doesn't support custom HTTP status codes
+  // But we include it in the response for debugging
+
+  return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(
+    ContentService.MimeType.JSON,
+  );
+}
+
+/**
+ * Enhanced logging functions
+ */
+function logInfo(message) {
+  if (CONFIG.ENABLE_LOGGING) {
+    console.log(`[INFO] ${new Date().toISOString()}: ${message}`);
+  }
+}
+
+function logError(message, error = null) {
+  if (CONFIG.ENABLE_LOGGING) {
+    console.error(`[ERROR] ${new Date().toISOString()}: ${message}`);
+    if (error) {
+      console.error(`[ERROR] Stack trace:`, error);
+    }
+  }
+}
+
+// 🧪 Enhanced test functions
+
+/**
+ * Test the webhook with sample data
+ */
+function testDoPostEnhanced() {
+  logInfo("🧪 Starting enhanced test...");
+
+  const testData = {
+    postData: {
+      contents: JSON.stringify({
+        fullName: "أحمد محمد - اختبار محسن",
+        phone: "0771234567",
+        altPhone: "0551234567",
+        wilaya: "الجزائر",
+        baladia: "الجزائر الوسطى",
+        deliveryType: "home",
+        quantity: 2,
+        productPrice: 5000,
+        deliveryPrice: 600,
+        totalPrice: 5600,
+        notes: "طلب تجريبي محسن من Google Apps Script",
+        fingerprint: "test123",
+        timestamp: new Date().toISOString(),
+      }),
+    },
+  };
+
+  try {
+    const result = doPost(testData);
+    const content = result.getContent();
+    logInfo("✅ Enhanced test successful:", content);
+    return JSON.parse(content);
+  } catch (error) {
+    logError("❌ Enhanced test failed:", error);
+    return { success: false, error: error.toString() };
+  }
+}
+
+/**
+ * Check configuration and permissions
+ */
+function checkConfigurationEnhanced() {
+  logInfo("🔍 Checking enhanced configuration...");
+
+  const results = {
+    spreadsheetConfigured: false,
+    spreadsheetAccessible: false,
+    sheetExists: false,
+    permissions: false,
+  };
+
+  // Check SPREADSHEET_ID
+  if (CONFIG.SPREADSHEET_ID === "YOUR_SPREADSHEET_ID") {
+    logError("❌ SPREADSHEET_ID not configured");
+    return results;
+  }
+  results.spreadsheetConfigured = true;
+
+  // Check spreadsheet access
+  try {
+    const spreadsheet = SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID);
+    const name = spreadsheet.getName();
+    logInfo("✅ Spreadsheet accessible: " + name);
+    results.spreadsheetAccessible = true;
+
+    // Check sheet
+    const sheet = spreadsheet.getSheetByName(CONFIG.SHEET_NAME);
+    if (sheet) {
+      logInfo("✅ Sheet exists: " + CONFIG.SHEET_NAME);
+      results.sheetExists = true;
+    } else {
+      logInfo("⚠️ Sheet will be created: " + CONFIG.SHEET_NAME);
+    }
+
+    // Test permissions by trying to write
+    try {
+      const testSheet = sheet || spreadsheet.insertSheet("test_permissions");
+      testSheet.getRange("A1").setValue("Permission test");
+      results.permissions = true;
+
+      // Clean up test
+      if (!sheet) {
+        spreadsheet.deleteSheet(testSheet);
+      }
+
+      logInfo("✅ Write permissions confirmed");
+    } catch (permError) {
+      logError("❌ No write permissions:", permError);
+    }
+  } catch (error) {
+    logError("❌ Cannot access spreadsheet:", error);
+  }
+
+  logInfo("📊 Configuration check results:", JSON.stringify(results));
+  return results;
+}
+
+/**
+ * Initialize sample data for testing
+ */
+function initializeSampleData() {
+  logInfo("📝 Initializing sample data...");
+
+  const sampleOrders = [
+    {
+      fullName: "فاطمة أحمد",
+      phone: "0771234567",
+      wilaya: "الجزائر",
+      baladia: "باب الواد",
+      deliveryType: "home",
+      quantity: 1,
+      productPrice: 2500,
+      deliveryPrice: 600,
+      totalPrice: 3100,
+      notes: "طلب تجريبي",
+    },
+    {
+      fullName: "محمد علي",
+      phone: "0551234567",
+      wilaya: "وهران",
+      baladia: "وهران",
+      deliveryType: "office",
+      quantity: 2,
+      productPrice: 5000,
+      deliveryPrice: 400,
+      totalPrice: 5400,
+      notes: "عرض 2+1 مجاناً",
+    },
+  ];
+
+  sampleOrders.forEach((order, index) => {
+    const testData = {
+      postData: {
+        contents: JSON.stringify({
+          ...order,
+          fingerprint: `sample${index}`,
+          timestamp: new Date().toISOString(),
+        }),
+      },
+    };
+
+    try {
+      doPost(testData);
+      logInfo(`✅ Sample order ${index + 1} added`);
+    } catch (error) {
+      logError(`❌ Sample order ${index + 1} failed:`, error);
+    }
+  });
+
+  logInfo("🎉 Sample data initialization completed");
+}

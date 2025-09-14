@@ -1,0 +1,127 @@
+Starting order submission to webhook services... {fullName: 'test', phone: '0779597000', altPhone: '', wilaya: 'بجاية', baladia: 'test', …}
+index-ma5kqnIb.js:210 Facebook Pixel not initialized
+trackEvent @ index-ma5kqnIb.js:210
+trackPurchase @ index-ma5kqnIb.js:210
+vO @ index-ma5kqnIb.js:210
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this warning
+index-ma5kqnIb.js:210 🔒 Using secure serverless webhook integration (Netlify Functions)...
+index-ma5kqnIb.js:201 🚀 Starting secure webhook integration via Netlify Functions...
+index-ma5kqnIb.js:201 🔒 Security: Webhook URLs are now hidden on server-side
+index-ma5kqnIb.js:201 🔒 Sending to Telegram via secure function...
+index-ma5kqnIb.js:201 🔒 Sending to Google Sheets via secure function...
+index-ma5kqnIb.js:211 Developer tools detected - Image protection active
+(anonymous) @ index-ma5kqnIb.js:211Understand this warning
+index-ma5kqnIb.js:201  POST https://skisbymiras.netlify.app/.netlify/functions/google-sheets 500 (Internal Server Error)
+uO @ index-ma5kqnIb.js:201
+fO @ index-ma5kqnIb.js:201
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:201 ❌ Google Sheets secure function error: Error: خدمة Google Sheets غير مُعدّة - يرجى إضافة رابط Google Apps Script
+    at uO (index-ma5kqnIb.js:201:36438)
+    at async Promise.allSettled (/index 1)
+    at async fO (index-ma5kqnIb.js:201:37392)
+    at async onSubmit (index-ma5kqnIb.js:210:4264)
+    at async index-ma5kqnIb.js:148:190968
+uO @ index-ma5kqnIb.js:201
+await in uO
+fO @ index-ma5kqnIb.js:201
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:201  POST https://skisbymiras.netlify.app/.netlify/functions/telegram 500 (Internal Server Error)
+dO @ index-ma5kqnIb.js:201
+fO @ index-ma5kqnIb.js:201
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:201 ❌ Telegram secure function error: Error: خدمة Telegram غير مُعدّة
+    at dO (index-ma5kqnIb.js:201:36957)
+    at async Promise.allSettled (/index 0)
+    at async fO (index-ma5kqnIb.js:201:37392)
+    at async onSubmit (index-ma5kqnIb.js:210:4264)
+    at async index-ma5kqnIb.js:148:190968
+dO @ index-ma5kqnIb.js:201
+await in dO
+fO @ index-ma5kqnIb.js:201
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:201 📊 Secure webhook results: {telegram: false, googleSheets: false, overallSuccess: false, securityLevel: 'MAXIMUM - Webhooks hidden server-side'}googleSheets: falseoverallSuccess: falsesecurityLevel: "MAXIMUM - Webhooks hidden server-side"telegram: false[[Prototype]]: Object
+index-ma5kqnIb.js:210 Webhook results: {telegram: {…}, googleSheets: {…}, overallSuccess: false}googleSheets: {success: false, message: 'خطأ في حفظ الطلب في Google Sheets: خدمة Google She…s غير مُعدّة - يرجى إضافة رابط Google Apps Script'}overallSuccess: falsetelegram: {success: false, message: 'خطأ في إرسال الطلب إلى Telegram: خدمة Telegram غير مُعدّة'}[[Prototype]]: Object
+index-ma5kqnIb.js:211 All webhook services failed: {telegram: {…}, googleSheets: {…}, overallSuccess: false}
+onSubmit @ index-ma5kqnIb.js:211
+await in onSubmit
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:211 Order submission error: Error: فشل في إرسال الطلب إلى جميع الخدمات. خطأ في إرسال الطلب إلى Telegram: خدمة Telegram غير مُعدّة | خطأ في حفظ الطلب في Google Sheets: خدمة Google Sheets غير مُعدّة - يرجى إضافة رابط Google Apps Script
+    at onSubmit (index-ma5kqnIb.js:211:94)
+    at async index-ma5kqnIb.js:148:190968

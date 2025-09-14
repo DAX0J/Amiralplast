@@ -1,0 +1,204 @@
+index-ma5kqnIb.js:201  POST https://skisbymiras.netlify.app/.netlify/functions/telegram 500 (Internal Server Error)
+dO @ index-ma5kqnIb.js:201
+fO @ index-ma5kqnIb.js:201
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:201 ❌ Telegram secure function error: Error: خطأ في إرسال الطلب إلى Telegram: استجابة غير صالحة من Telegram webhook: The deployment could not be found on Vercel.
+
+DEPLOYMENT_NOT_FOUND
+
+cle1::tm5bv-1756185755610-99e494
+    at dO (index-ma5kqnIb.js:201:36957)
+    at async Promise.allSettled (/index 0)
+    at async fO (index-ma5kqnIb.js:201:37392)
+    at async onSubmit (index-ma5kqnIb.js:210:4264)
+    at async index-ma5kqnIb.js:148:190968
+dO @ index-ma5kqnIb.js:201
+await in dO
+fO @ index-ma5kqnIb.js:201
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:211 Developer tools detected - Image protection active
+(anonymous) @ index-ma5kqnIb.js:211
+setInterval
+EO @ index-ma5kqnIb.js:211
+bO @ index-ma5kqnIb.js:211
+n @ index-ma5kqnIb.js:211
+(anonymous) @ index-ma5kqnIb.js:211
+pu @ index-ma5kqnIb.js:40
+Bs @ index-ma5kqnIb.js:40
+Bv @ index-ma5kqnIb.js:40
+fi @ index-ma5kqnIb.js:38
+UA @ index-ma5kqnIb.js:40
+Ci @ index-ma5kqnIb.js:40
+Gw @ index-ma5kqnIb.js:40
+b @ index-ma5kqnIb.js:25
+P @ index-ma5kqnIb.js:25Understand this warning
+index-ma5kqnIb.js:211 Developer tools detected - Image protection active
+(anonymous) @ index-ma5kqnIb.js:211
+setInterval
+EO @ index-ma5kqnIb.js:211
+bO @ index-ma5kqnIb.js:211
+n @ index-ma5kqnIb.js:211
+(anonymous) @ index-ma5kqnIb.js:211
+pu @ index-ma5kqnIb.js:40
+Bs @ index-ma5kqnIb.js:40
+Bv @ index-ma5kqnIb.js:40
+fi @ index-ma5kqnIb.js:38
+UA @ index-ma5kqnIb.js:40
+Ci @ index-ma5kqnIb.js:40
+Gw @ index-ma5kqnIb.js:40
+b @ index-ma5kqnIb.js:25
+P @ index-ma5kqnIb.js:25Understand this warning
+index-ma5kqnIb.js:211 Developer tools detected - Image protection active
+(anonymous) @ index-ma5kqnIb.js:211
+setInterval
+EO @ index-ma5kqnIb.js:211
+bO @ index-ma5kqnIb.js:211
+n @ index-ma5kqnIb.js:211
+(anonymous) @ index-ma5kqnIb.js:211
+pu @ index-ma5kqnIb.js:40
+Bs @ index-ma5kqnIb.js:40
+Bv @ index-ma5kqnIb.js:40
+fi @ index-ma5kqnIb.js:38
+UA @ index-ma5kqnIb.js:40
+Ci @ index-ma5kqnIb.js:40
+Gw @ index-ma5kqnIb.js:40
+b @ index-ma5kqnIb.js:25
+P @ index-ma5kqnIb.js:25Understand this warning
+index-ma5kqnIb.js:211 Developer tools detected - Image protection active
+(anonymous) @ index-ma5kqnIb.js:211
+setInterval
+EO @ index-ma5kqnIb.js:211
+bO @ index-ma5kqnIb.js:211
+n @ index-ma5kqnIb.js:211
+(anonymous) @ index-ma5kqnIb.js:211
+pu @ index-ma5kqnIb.js:40
+Bs @ index-ma5kqnIb.js:40
+Bv @ index-ma5kqnIb.js:40
+fi @ index-ma5kqnIb.js:38
+UA @ index-ma5kqnIb.js:40
+Ci @ index-ma5kqnIb.js:40
+Gw @ index-ma5kqnIb.js:40
+b @ index-ma5kqnIb.js:25
+P @ index-ma5kqnIb.js:25Understand this warning
+index-ma5kqnIb.js:211 Developer tools detected - Image protection active
+(anonymous) @ index-ma5kqnIb.js:211
+setInterval
+EO @ index-ma5kqnIb.js:211
+bO @ index-ma5kqnIb.js:211
+n @ index-ma5kqnIb.js:211
+(anonymous) @ index-ma5kqnIb.js:211
+pu @ index-ma5kqnIb.js:40
+Bs @ index-ma5kqnIb.js:40
+Bv @ index-ma5kqnIb.js:40
+fi @ index-ma5kqnIb.js:38
+UA @ index-ma5kqnIb.js:40
+Ci @ index-ma5kqnIb.js:40
+Gw @ index-ma5kqnIb.js:40
+b @ index-ma5kqnIb.js:25
+P @ index-ma5kqnIb.js:25Understand this warning
+index-ma5kqnIb.js:211 Developer tools detected - Image protection active
+(anonymous) @ index-ma5kqnIb.js:211
+setInterval
+EO @ index-ma5kqnIb.js:211
+bO @ index-ma5kqnIb.js:211
+n @ index-ma5kqnIb.js:211
+(anonymous) @ index-ma5kqnIb.js:211
+pu @ index-ma5kqnIb.js:40
+Bs @ index-ma5kqnIb.js:40
+Bv @ index-ma5kqnIb.js:40
+fi @ index-ma5kqnIb.js:38
+UA @ index-ma5kqnIb.js:40
+Ci @ index-ma5kqnIb.js:40
+Gw @ index-ma5kqnIb.js:40
+b @ index-ma5kqnIb.js:25
+P @ index-ma5kqnIb.js:25Understand this warning
+index-ma5kqnIb.js:201  POST https://skisbymiras.netlify.app/.netlify/functions/google-sheets 504 (Gateway Timeout)
+uO @ index-ma5kqnIb.js:201
+fO @ index-ma5kqnIb.js:201
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:201 ❌ Google Sheets secure function error: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at uO (index-ma5kqnIb.js:201:36416)
+    at async Promise.allSettled (/index 1)
+    at async fO (index-ma5kqnIb.js:201:37392)
+    at async onSubmit (index-ma5kqnIb.js:210:4264)
+    at async index-ma5kqnIb.js:148:190968
+uO @ index-ma5kqnIb.js:201
+await in uO
+fO @ index-ma5kqnIb.js:201
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:201 📊 Secure webhook results: {telegram: false, googleSheets: false, overallSuccess: false, securityLevel: 'MAXIMUM - Webhooks hidden server-side'}
+index-ma5kqnIb.js:210 Webhook results: {telegram: {…}, googleSheets: {…}, overallSuccess: false}
+index-ma5kqnIb.js:211 All webhook services failed: {telegram: {…}, googleSheets: {…}, overallSuccess: false}
+onSubmit @ index-ma5kqnIb.js:211
+await in onSubmit
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:211 Order submission error: Error: فشل في إرسال الطلب إلى جميع الخدمات. خطأ في إرسال الطلب إلى Telegram: خطأ في إرسال الطلب إلى Telegram: استجابة غير صالحة من Telegram webhook: The deployment could not be found on Vercel.
+
+DEPLOYMENT_NOT_FOUND
+
+cle1::tm5bv-1756185755610-99e494 | خطأ في حفظ الطلب في Google Sheets: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at onSubmit (index-ma5kqnIb.js:211:94)

@@ -1,0 +1,149 @@
+
+
+---
+
+# 📌 تعليمات للمبرمج — ربط الموقع بـ Google Sheets عبر Netlify Functions (من الصفر)
+
+> ⚠️ تنبيه مهم:
+> أي كود قديم (مثل محاولات مباشرة من الـ frontend أو محاولات استخدام OAuth أو مكتبات قديمة) لازم يتم **حذفه بالكامل**. الحل الوحيد المسموح هو عبر **Netlify Functions** مع **Google Sheets API** باستخدام **Service Account**.
+
+---
+
+## ✅ ما تم إنجازه (أنا كعميل أنهيته):
+
+1. أنشأت **Service Account** من Google Cloud.
+2. حملت **مفتاح JSON** الخاص به.
+3. شاركت Google Sheet مع إيميل الـ Service Account (بصلاحية Editor).
+4. حصلت على **Spreadsheet ID** (من رابط الشيت).
+5. خزّنت JSON + Spreadsheet ID بشكل آمن (جاهز ينسخ لمتغيرات البيئة).
+
+---
+
+## 📌 ما هو المطلوب منك كمبرمج (الخطوات الإلزامية):
+
+### 1. إعداد البيئة في Netlify
+
+* في إعدادات المشروع على Netlify (Environment Variables):
+
+  * أضف متغير:
+
+    * `GOOGLE_SERVICE_ACCOUNT_KEY_JSON` = كامل محتوى ملف JSON (انسخه كنص).
+  * أضف متغير:
+
+    * `SPREADSHEET_ID` = رقم الشيت.
+* لا تضع هذه القيم داخل الكود أو الـ repo إطلاقاً.
+
+---
+
+### 2. إنشاء Function جديدة (وتحذف أي تجارب قديمة)
+
+* أنشئ ملف جديد:
+
+  ```
+  netlify/functions/append-order.js
+  ```
+* احذف أي أكواد قديمة كانت تحاول تتصل بالشيت من الـ frontend.
+
+---
+
+### 3. الكود المطلوب (الحد الأدنى الأساسي)
+
+```js
+const { google } = require('googleapis');
+
+exports.handler = async (event) => {
+  try {
+    const body = JSON.parse(event.body);
+
+    const keys = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY_JSON);
+
+    const jwtClient = new google.auth.JWT(
+      keys.client_email,
+      null,
+      keys.private_key,
+      ['https://www.googleapis.com/auth/spreadsheets']
+    );
+    await jwtClient.authorize();
+
+    const sheets = google.sheets({ version: 'v4', auth: jwtClient });
+    const spreadsheetId = process.env.SPREADSHEET_ID;
+
+    const row = [
+      new Date().toISOString(),
+      body.id,
+      body.name,
+      body.email,
+      body.product,
+      body.qty,
+      body.total
+    ];
+
+    await sheets.spreadsheets.values.append({
+      spreadsheetId,
+      range: 'Orders!A1', // اسم الورقة (غيّره حسب ورقتك)
+      valueInputOption: 'RAW',
+      insertDataOption: 'INSERT_ROWS',
+      requestBody: { values: [row] }
+    });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: true })
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: err.message })
+    };
+  }
+};
+```
+
+---
+
+### 4. تعديل الـ Frontend
+
+* كل استدعاء للشيت لازم يروح عبر هذا الـ Function فقط:
+
+```js
+async function sendOrder(order) {
+  const res = await fetch('/.netlify/functions/append-order', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(order)
+  });
+  const result = await res.json();
+  console.log(result);
+}
+```
+
+* أي اتصال قديم مباشر مع Google Sheets API أو أي تجربة OAuth لازم يتم مسحها.
+
+---
+
+### 5. التحقق (Testing)
+
+* جرّب إرسال طلب من الـ frontend → تأكد الصف يضاف مباشرة في Google Sheet.
+* لو حصل خطأ "403" → معناته الشيت مش مشترك مع الإيميل الصحيح (راجع المشاركة).
+* لو حصل خطأ parsing → تأكد من إن JSON محفوظ صح في متغير البيئة.
+
+---
+
+## ❌ ممنوع تماماً:
+
+* ممنوع الاحتفاظ بمفتاح JSON في ملفات الكود.
+* ممنوع استدعاء Google Sheets API من frontend.
+* ممنوع إعادة استخدام تقنيات قديمة (Apps Script, OAuth, gapi.js في المتصفح).
+
+---
+
+## ✅ المخرجات النهائية المتوقعة منك
+
+1. Function جديدة تعمل 100% وتضيف الصفوف في Google Sheets.
+2. كود frontend نظيف يرسل الطلبات عبر Netlify Function.
+3. مسح كل الأكواد القديمة اللي كانت تحاول تربط الشيت بشكل مباشر.
+
+---
+
+

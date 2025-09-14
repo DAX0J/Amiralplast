@@ -1,0 +1,69 @@
+Starting order submission to webhook services... {fullName: 'test', phone: '0779597800', altPhone: '0779597800', wilaya: 'باتنة', baladia: 'test', …}
+index-ma5kqnIb.js:210 Facebook Pixel not initialized
+trackEvent @ index-ma5kqnIb.js:210
+trackPurchase @ index-ma5kqnIb.js:210
+vO @ index-ma5kqnIb.js:210
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this warning
+index-ma5kqnIb.js:210 🔒 Using secure serverless webhook integration (Netlify Functions)...
+index-ma5kqnIb.js:201 🚀 Starting secure webhook integration via Netlify Functions...
+index-ma5kqnIb.js:201 🔒 Security: Webhook URLs are now hidden on server-side
+index-ma5kqnIb.js:201 🔒 Sending to Telegram via secure function...
+index-ma5kqnIb.js:201 🔒 Sending to Google Sheets via secure function...
+index-ma5kqnIb.js:201  POST https://skisbymiras.netlify.app/.netlify/functions/telegram 500 (Internal Server Error)
+dO @ index-ma5kqnIb.js:201
+fO @ index-ma5kqnIb.js:201
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:201 ❌ Telegram secure function error: Error: خطأ في إرسال الطلب إلى Telegram: Unexpected token 'T', "The deploy"... is not valid JSON
+    at dO (index-ma5kqnIb.js:201:36957)
+    at async Promise.allSettled (/index 0)
+    at async fO (index-ma5kqnIb.js:201:37392)
+    at async onSubmit (index-ma5kqnIb.js:210:4264)
+    at async index-ma5kqnIb.js:148:190968
+dO @ index-ma5kqnIb.js:201
+await in dO
+fO @ index-ma5kqnIb.js:201
+onSubmit @ index-ma5kqnIb.js:210
+(anonymous) @ index-ma5kqnIb.js:148
+await in (anonymous)
+c_ @ index-ma5kqnIb.js:37
+d_ @ index-ma5kqnIb.js:37
+f_ @ index-ma5kqnIb.js:37
+rv @ index-ma5kqnIb.js:37
+J1 @ index-ma5kqnIb.js:37
+(anonymous) @ index-ma5kqnIb.js:37
+rp @ index-ma5kqnIb.js:40
+b1 @ index-ma5kqnIb.js:37
+pd @ index-ma5kqnIb.js:37
+Fh @ index-ma5kqnIb.js:37
+T_ @ index-ma5kqnIb.js:37Understand this error
+index-ma5kqnIb.js:211 Developer tools detected - Image protection active
+(anonymous) @ index-ma5kqnIb.js:211Understand this warning
+index-ma5kqnIb.js:201 ✅ Google Sheets response (secure): {success: true, orderId: 'ALT-1756132197567', message: 'تم حفظ الطلب في Google Sheets بنجاح (Alternative)'}
+index-ma5kqnIb.js:201 📊 Secure webhook results: {telegram: false, googleSheets: true, overallSuccess: true, securityLevel: 'MAXIMUM - Webhooks hidden server-side'}
+index-ma5kqnIb.js:210 Webhook results: 

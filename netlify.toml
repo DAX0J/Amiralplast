@@ -1,0 +1,22 @@
+[build]
+  functions = "netlify/functions"
+  publish = "dist/public"
+  command = "npm run build"
+
+
+# Handle function routes
+[[redirects]]
+  from = "/api/append-order"
+  to = "/.netlify/functions/append-order"
+  status = 200
+
+[[redirects]]
+  from = "/api/send-telegram"
+  to = "/.netlify/functions/send-telegram"
+  status = 200
+
+# SPA fallback for all other routes
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
