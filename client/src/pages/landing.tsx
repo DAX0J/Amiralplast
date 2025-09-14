@@ -28,10 +28,10 @@ export default function LandingPage() {
         const initialized = await initializeFacebookPixel();
         if (initialized) {
           trackViewContent({
-            content_name: 'زيت لبان الذكر الطبيعي',
-            content_category: 'Essential Oils',
-            content_ids: ['frankincense-oil'],
-            value: 3500,
+            content_name: 'كؤوس الحجامة الطبية - أميرال بلاست',
+            content_category: 'Medical Supplies',
+            content_ids: ['cupping-cups-amiral-plast'],
+            value: 17000,
             currency: 'DZD'
           });
         }

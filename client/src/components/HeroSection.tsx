@@ -58,7 +58,7 @@ export default function HeroSection() {
         {/* Priority preloaded image with enhanced protection */}
         <motion.img 
           src={landingImage}
-          alt="زيت لبان الذكر الطبيعي الأصلي"
+          alt="كؤوس الحجامة الطبية من أميرال بلاست"
           className={`w-full h-auto protected-image ${showImage ? 'block' : 'hidden'}`}
           onLoad={handleImageLoad}
           onContextMenu={handleContextMenu}
