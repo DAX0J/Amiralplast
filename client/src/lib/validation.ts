@@ -1,9 +1,9 @@
 export function validatePhone(phone: string): string | null {
   if (!phone) return 'رقم الهاتف مطلوب';
   
-  const phoneRegex = /^(077|055|066)\d{7}$/;
+  const phoneRegex = /^(07|05|06)\d{8}$/;
   if (!phoneRegex.test(phone)) {
-    return 'رقم غير صالح — أدخل رقمًا صحيحًا من شبكات الجزائر (077/055/066)';
+    return 'رقم غير صالح — أدخل رقمًا صحيحًا من شبكات الجزائر (07/05/06)';
   }
   
   // Check for repeated digits

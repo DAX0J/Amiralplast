@@ -149,7 +149,7 @@ export default function OrderForm() {
                         >
                           <Input 
                             {...field} 
-                            placeholder="0771234567"
+                            placeholder="ادخل رقم الهاتف"
                             className="form-field text-lg h-14 rounded-2xl border-2 bg-gradient-to-r from-white to-warm-beige/5 focus:from-warm-beige/10 focus:to-white transition-all duration-300 hover:shadow-md"
                             dir="ltr"
                             data-testid="input-phone"
@@ -163,7 +163,7 @@ export default function OrderForm() {
                         animate={{ opacity: [0.7, 1, 0.7] }}
                         transition={{ duration: 2, repeat: Infinity }}
                       >
-                        يجب أن يبدأ برقم 077 أو 055 أو 066
+                        يجب أن يبدأ برقم 07 أو 05 أو 06 ويكون 10 أرقام
                       </motion.p>
                     </FormItem>
                   )}
