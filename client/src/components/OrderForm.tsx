@@ -451,7 +451,7 @@ export default function OrderForm() {
                           transition={{ duration: 0.3 }}
                         >
                           <p className="text-sm text-blue-800 font-arabic" data-testid="text-quantity-info">
-                            📊 إجمالي: {effectiveCartons} كرتون ({totalCups} كأس) - نوع السعر: {pricingTier.nameArabic}
+                            📊 إجمالي: {effectiveCartons} كرتون = {effectiveCartons * 100} كيس = {totalCups} كأس
                           </p>
                         </motion.div>
                       )}
