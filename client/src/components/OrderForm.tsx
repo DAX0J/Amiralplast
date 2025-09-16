@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Minus, Plus, Loader2, Sparkles, Heart, Star, ShoppingCart } from 'lucide-react';
 import { useOrderForm } from '@/hooks/useOrderForm';
@@ -12,7 +11,7 @@ import { type WilayaName, WILAYAS } from '@/data/deliveryPrices';
 import { getAvailableVariants, UNITS, formatPrice, type UnitId } from '@/data/productPricing';
 
 export default function OrderForm() {
-  const { form, isSubmitting, showSuccess, rateLimited, onSubmit, calculateTotal, getEffectiveBagsCount, getCurrentPricingTier, getTotalCups } = useOrderForm();
+  const { form, isSubmitting, showSuccess, rateLimited, onSubmit, calculateTotal, getEffectiveCartonsCount, getCurrentPricingTier, getTotalCups } = useOrderForm();
 
   const watchedValues = form.watch();
   const { cupType, unit, wilaya, quantity } = watchedValues;
@@ -23,7 +22,7 @@ export default function OrderForm() {
   const totalPrice = productPrice + deliveryPrice;
   
   // Get additional pricing information
-  const effectiveBags = getEffectiveBagsCount(cupType, unit, quantity);
+  const effectiveCartons = getEffectiveCartonsCount(cupType, unit, quantity);
   const totalCups = getTotalCups(cupType, unit, quantity);
   const pricingTier = getCurrentPricingTier(cupType, unit, quantity);
 
@@ -346,7 +345,7 @@ export default function OrderForm() {
                               transition={{ delay: index * 0.02 }}
                             >
                               <SelectItem value={variant.id} className="font-arabic hover:bg-warm-beige/20 transition-colors">
-                                {variant.nameArabic} - {formatPrice(variant.pricePerBag)}
+                                {variant.nameArabic} - {formatPrice(variant.pricePerCarton)}
                               </SelectItem>
                             </motion.div>
                           ))}
@@ -358,99 +357,27 @@ export default function OrderForm() {
                 />
               </motion.div>
 
-              {/* Unit Selection - NEW FIELD */}
+              {/* Unit Information - Fixed to Carton Only */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.9 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
               >
-                <FormField
-                  control={form.control}
-                  name="unit"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-lg font-semibold text-gray-800 font-arabic flex items-center gap-2">
-                        📦 وحدة الشراء *
-                        <motion.span 
-                          className="text-xs bg-blue-500 text-white px-2 py-1 rounded-full"
-                          animate={{ scale: [1, 1.1, 1] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        >
-                          اختر الوحدة
-                        </motion.span>
-                      </FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          value={field.value}
-                          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-                          data-testid="radio-unit"
-                        >
-                          {Object.values(UNITS).map((unitOption) => (
-                            <motion.div
-                              key={unitOption.id}
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              transition={{ type: "spring", stiffness: 300 }}
-                            >
-                              <RadioGroupItem value={unitOption.id} id={unitOption.id} className="peer sr-only" />
-                              <Label 
-                                htmlFor={unitOption.id} 
-                                className={`relative form-field border-2 rounded-2xl p-6 cursor-pointer block transition-all duration-300 hover:shadow-lg ${
-                                  field.value === unitOption.id 
-                                    ? 'border-primary-red bg-primary-red/10 shadow-lg' 
-                                    : 'border-gray-200 bg-white hover:border-warm-beige hover:bg-warm-beige/5'
-                                }`}
-                              >
-                                {/* Selection Indicator */}
-                                {field.value === unitOption.id && (
-                                  <motion.div
-                                    className="absolute top-3 right-3 w-6 h-6 bg-primary-red rounded-full flex items-center justify-center"
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    transition={{ type: "spring", stiffness: 400 }}
-                                  >
-                                    <motion.span
-                                      className="text-white text-sm font-bold"
-                                      initial={{ opacity: 0 }}
-                                      animate={{ opacity: 1 }}
-                                      transition={{ delay: 0.1 }}
-                                    >
-                                      ✓
-                                    </motion.span>
-                                  </motion.div>
-                                )}
-
-                                <div className="text-center">
-                                  <motion.div
-                                    className="text-4xl mb-3"
-                                    animate={{ rotate: field.value === unitOption.id ? [0, 10, 0] : 0 }}
-                                    transition={{ duration: 0.5 }}
-                                  >
-                                    {unitOption.id === 'bag' ? '🛍️' : '📦'}
-                                  </motion.div>
-                                  <h3 className="font-semibold text-lg mb-2 font-arabic">{unitOption.nameArabic}</h3>
-                                  <p className="text-sm text-gray-600 font-arabic">
-                                    {unitOption.id === 'bag' ? '6 كؤوس في الكيس الواحد' : '100 كيس في الكرتون الواحد'}
-                                  </p>
-                                  <motion.div
-                                    className="mt-2 text-xs text-blue-600 font-arabic"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: field.value === unitOption.id ? 1 : 0.7 }}
-                                    transition={{ duration: 0.3 }}
-                                  >
-                                    {unitOption.id === 'bag' ? '🏪 تجزئة' : '🏭 جملة'}
-                                  </motion.div>
-                                </div>
-                              </Label>
-                            </motion.div>
-                          ))}
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage className="text-primary-red font-arabic" />
-                    </FormItem>
-                  )}
-                />
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-4">
+                  <div className="flex items-center justify-center gap-3 font-arabic">
+                    <motion.div
+                      className="text-2xl"
+                      animate={{ rotate: [0, 5, -5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      📦
+                    </motion.div>
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold text-blue-800">البيع بالكرتون فقط</h3>
+                      <p className="text-sm text-blue-600">كل كرتون يحتوي على 600 كأس حجامة</p>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
 
               {/* Quantity Selection */}
@@ -471,7 +398,7 @@ export default function OrderForm() {
                           animate={{ scale: [1, 1.1, 1] }}
                           transition={{ duration: 3, repeat: Infinity }}
                         >
-                          {unit === 'bag' ? 'أكياس' : 'كراتين'}
+                          كراتين
                         </motion.span>
                       </FormLabel>
                       <FormControl>
@@ -516,7 +443,7 @@ export default function OrderForm() {
                       <FormMessage className="text-primary-red font-arabic" />
                       
                       {/* Quantity Info */}
-                      {effectiveBags > 0 && (
+                      {effectiveCartons > 0 && (
                         <motion.div 
                           className="mt-2 p-3 bg-blue-50 rounded-lg"
                           initial={{ opacity: 0 }}
@@ -524,7 +451,7 @@ export default function OrderForm() {
                           transition={{ duration: 0.3 }}
                         >
                           <p className="text-sm text-blue-800 font-arabic" data-testid="text-quantity-info">
-                            📊 إجمالي: {effectiveBags} كيس ({totalCups} كأس) - نوع السعر: {pricingTier.nameArabic}
+                            📊 إجمالي: {effectiveCartons} كرتون ({totalCups} كأس) - نوع السعر: {pricingTier.nameArabic}
                           </p>
                         </motion.div>
                       )}

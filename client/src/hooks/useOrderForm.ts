@@ -6,11 +6,12 @@ import { type WilayaName } from '@/data/deliveryPrices';
 import { 
   PRODUCT_VARIANTS, 
   UNITS, 
+  PRODUCT_VARIANT_IDS,
   type ProductVariantId, 
   type UnitId, 
   getProductVariant, 
   getUnit, 
-  convertToBags, 
+  convertToCartons, 
   getPricingTier, 
   formatPrice,
   getAvailableVariants 
@@ -31,8 +32,8 @@ const formSchema = z.object({
     message: 'رقم غير صالح — أدخل رقمًا صحيحًا من شبكات الجزائر (077/055/066)'
   }),
   cupType: z.string().min(1, 'نوع الكأس مطلوب'),
-  unit: z.enum(['bag', 'carton'], { 
-    errorMap: () => ({ message: 'الوحدة يجب أن تكون كيس أو كرتون' })
+  unit: z.enum(['carton'], { 
+    errorMap: () => ({ message: 'الوحدة يجب أن تكون كرتون' })
   }),
   wilaya: z.string().min(1, 'الولاية مطلوبة'),
   baladia: z.string().min(1, 'البلدية مطلوبة'),
@@ -70,8 +71,8 @@ export function useOrderForm() {
       fullName: '',
       phone: '',
       altPhone: '',
-      cupType: 'large_size_1', // Default to first available variant
-      unit: 'bag',
+      cupType: PRODUCT_VARIANT_IDS[0],
+      unit: 'carton',
       wilaya: '',
       baladia: '',
       quantity: 1,
@@ -87,36 +88,36 @@ export function useOrderForm() {
       return 0;
     }
 
-    // Calculate total bags: quantity × unit factor
-    const totalBags = convertToBags(quantity, unit as UnitId);
+    // Calculate total cartons: quantity × unit factor
+    const totalCartons = convertToCartons(quantity, unit as UnitId);
     
-    // Calculate total price: pricePerBag × totalBags
-    const totalPrice = variant.pricePerBag * totalBags;
+    // Calculate total price: pricePerCarton × totalCartons
+    const totalPrice = variant.pricePerCarton * totalCartons;
     
     // Delivery is always free for cupping cups
     return totalPrice;
   };
 
-  // Helper function to get effective bags count
-  const getEffectiveBagsCount = (cupType: string, unit: string, quantity: number) => {
+  // Helper function to get effective cartons count
+  const getEffectiveCartonsCount = (cupType: string, unit: string, quantity: number) => {
     const unitData = getUnit(unit);
     if (!unitData) return 0;
-    return convertToBags(quantity, unit as UnitId);
+    return convertToCartons(quantity, unit as UnitId);
   };
 
   // Helper function to get current pricing tier
   const getCurrentPricingTier = (cupType: string, unit: string, quantity: number) => {
-    const effectiveBags = getEffectiveBagsCount(cupType, unit, quantity);
-    return getPricingTier(effectiveBags);
+    const effectiveCartons = getEffectiveCartonsCount(cupType, unit, quantity);
+    return getPricingTier(effectiveCartons);
   };
 
   // Helper function to get total cups in order
   const getTotalCups = (cupType: string, unit: string, quantity: number) => {
     const variant = getProductVariant(cupType);
-    const effectiveBags = getEffectiveBagsCount(cupType, unit, quantity);
+    const effectiveCartons = getEffectiveCartonsCount(cupType, unit, quantity);
     
     if (!variant) return 0;
-    return effectiveBags * variant.cupsPerBag;
+    return effectiveCartons * variant.cupsPerCarton;
   };
 
   const onSubmit = async (data: FormData) => {
@@ -139,7 +140,7 @@ export function useOrderForm() {
     try {
       const totalPrice = calculateTotal(data.cupType, data.unit, data.quantity);
       const variant = getProductVariant(data.cupType);
-      const effectiveBags = getEffectiveBagsCount(data.cupType, data.unit, data.quantity);
+      const effectiveCartons = getEffectiveCartonsCount(data.cupType, data.unit, data.quantity);
       const totalCups = getTotalCups(data.cupType, data.unit, data.quantity);
       const pricingTier = getCurrentPricingTier(data.cupType, data.unit, data.quantity);
       
@@ -164,7 +165,7 @@ export function useOrderForm() {
         totalPrice: totalPrice,
         productPrice: productPrice,
         deliveryPrice: deliveryPrice,
-        effectiveBags: effectiveBags,
+        effectiveBags: effectiveCartons,
         totalCups: totalCups,
         pricingTier: pricingTier.nameArabic,
         cupTypeArabic: variant?.nameArabic || data.cupType
@@ -229,7 +230,7 @@ export function useOrderForm() {
     rateLimited,
     onSubmit,
     calculateTotal,
-    getEffectiveBagsCount,
+    getEffectiveCartonsCount,
     getCurrentPricingTier,
     getTotalCups
   };

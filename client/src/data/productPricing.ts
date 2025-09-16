@@ -7,8 +7,8 @@ export interface ProductVariant {
   name: string;
   nameArabic: string;
   description?: string;
-  pricePerBag: number; // Price in DZD
-  cupsPerBag: number;
+  pricePerCarton: number; // Price in DZD
+  cupsPerCarton: number;
   available: boolean;
 }
 
@@ -16,7 +16,7 @@ export interface Unit {
   id: string;
   name: string;
   nameArabic: string;
-  factor: number; // How many bags this unit contains
+  factor: number; // Conversion factor for this unit
   minOrder: number; // Minimum order quantity in this unit
 }
 
@@ -24,14 +24,14 @@ export interface PricingTier {
   id: string;
   name: string;
   nameArabic: string;
-  minQuantityBags: number;
-  maxQuantityBags?: number;
+  minQuantityCartons: number;
+  maxQuantityCartons?: number;
   description: string;
 }
 
 export interface DeliveryPolicy {
   freeDeliveryEnabled: boolean;
-  freeDeliveryThreshold: number; // in bags
+  freeDeliveryThreshold: number; // in cartons
   freeDeliveryMessage: string;
   freeDeliveryMessageArabic: string;
 }
@@ -43,8 +43,8 @@ export const PRODUCT_VARIANTS: Record<string, ProductVariant> = {
     name: "Large Size Cups No. 1",
     nameArabic: "كؤوس كبيرة الحجم رقم (1)",
     description: "Large professional cupping cups",
-    pricePerBag: 17000,
-    cupsPerBag: 6,
+    pricePerCarton: 17000,
+    cupsPerCarton: 600,
     available: true
   },
   "medium_size_2": {
@@ -52,8 +52,8 @@ export const PRODUCT_VARIANTS: Record<string, ProductVariant> = {
     name: "Medium Size Cups No. 2",
     nameArabic: "كؤوس متوسطة الحجم رقم (2)",
     description: "Medium professional cupping cups",
-    pricePerBag: 17000,
-    cupsPerBag: 6,
+    pricePerCarton: 17000,
+    cupsPerCarton: 600,
     available: true
   },
   "medium_yellow_men_3": {
@@ -61,8 +61,8 @@ export const PRODUCT_VARIANTS: Record<string, ProductVariant> = {
     name: "Medium Cups (Yellow Men) No. 3", 
     nameArabic: "كؤوس متوسطة (الأصفرين رجال) رقم (3)",
     description: "Medium yellow cupping cups for men",
-    pricePerBag: 16500,
-    cupsPerBag: 6,
+    pricePerCarton: 16500,
+    cupsPerCarton: 600,
     available: true
   },
   "medium_yellow_women_4": {
@@ -70,8 +70,8 @@ export const PRODUCT_VARIANTS: Record<string, ProductVariant> = {
     name: "Medium Cups (Yellow Women) No. 4",
     nameArabic: "كؤوس متوسطة (الأصفرين نساء) رقم (4)", 
     description: "Medium yellow cupping cups for women",
-    pricePerBag: 16500,
-    cupsPerBag: 6,
+    pricePerCarton: 16500,
+    cupsPerCarton: 600,
     available: true
   },
   "small_tribal_6": {
@@ -79,8 +79,8 @@ export const PRODUCT_VARIANTS: Record<string, ProductVariant> = {
     name: "Small Cups (Tribal) No. 6",
     nameArabic: "كؤوس صغيرة (القبيلة) رقم (6)",
     description: "Small tribal cupping cups",
-    pricePerBag: 16000,
-    cupsPerBag: 6,
+    pricePerCarton: 16000,
+    cupsPerCarton: 600,
     available: true
   },
   "graduated_mixed": {
@@ -88,26 +88,19 @@ export const PRODUCT_VARIANTS: Record<string, ProductVariant> = {
     name: "Graduated Mixed Cups (2/2/2/2)",
     nameArabic: "كؤوس مدرجة (2/2/2/2)",
     description: "Mixed set of graduated cupping cups",
-    pricePerBag: 17000,
-    cupsPerBag: 6,
+    pricePerCarton: 17000,
+    cupsPerCarton: 600,
     available: true
   }
 };
 
 // Available Units
 export const UNITS: Record<string, Unit> = {
-  "bag": {
-    id: "bag",
-    name: "Bag",
-    nameArabic: "كيس",
-    factor: 1, // 1 bag = 1 bag
-    minOrder: 1
-  },
   "carton": {
     id: "carton", 
     name: "Carton",
     nameArabic: "كرتون",
-    factor: 100, // 1 carton = 100 bags
+    factor: 1, // 1 carton = 1 unit
     minOrder: 1
   }
 };
@@ -118,23 +111,23 @@ export const PRICING_TIERS: Record<string, PricingTier> = {
     id: "retail",
     name: "Retail",
     nameArabic: "تجزئة",
-    minQuantityBags: 1,
-    maxQuantityBags: 49,
+    minQuantityCartons: 1,
+    maxQuantityCartons: 49,
     description: "Individual or small quantity purchases"
   },
   "semi_wholesale": {
     id: "semi_wholesale", 
     name: "Semi-Wholesale",
     nameArabic: "نصف جملة",
-    minQuantityBags: 1,
-    maxQuantityBags: 49,
+    minQuantityCartons: 1,
+    maxQuantityCartons: 49,
     description: "Medium quantity purchases under wholesale threshold"
   },
   "wholesale": {
     id: "wholesale",
     name: "Wholesale", 
     nameArabic: "جملة",
-    minQuantityBags: 50,
+    minQuantityCartons: 50,
     description: "Bulk purchases of 50 bags or more"
   }
 };
@@ -148,9 +141,8 @@ export const DELIVERY_POLICY: DeliveryPolicy = {
 };
 
 // Constants
-export const WHOLESALE_THRESHOLD_BAGS = 50;
-export const CUPS_PER_BAG = 6;
-export const BAGS_PER_CARTON = 100;
+export const WHOLESALE_THRESHOLD_CARTONS = 50;
+export const CUPS_PER_CARTON = 600;
 
 // Type exports for arrays
 export type ProductVariantId = keyof typeof PRODUCT_VARIANTS;
@@ -168,8 +160,8 @@ export const PRICING_TIER_IDS = Object.keys(PRICING_TIERS) as PricingTierId[];
  * Get pricing tier based on quantity in bags
  * تحديد نوع السعر حسب الكمية
  */
-export const getPricingTier = (quantityInBags: number): PricingTier => {
-  if (quantityInBags >= WHOLESALE_THRESHOLD_BAGS) {
+export const getPricingTier = (quantityInCartons: number): PricingTier => {
+  if (quantityInCartons >= WHOLESALE_THRESHOLD_CARTONS) {
     return PRICING_TIERS.wholesale;
   }
   return PRICING_TIERS.semi_wholesale;
@@ -179,26 +171,26 @@ export const getPricingTier = (quantityInBags: number): PricingTier => {
  * Check if quantity qualifies for wholesale pricing
  * التحقق من إمكانية الحصول على سعر الجملة
  */
-export const isWholesaleQuantity = (quantityInBags: number): boolean => {
-  return quantityInBags >= WHOLESALE_THRESHOLD_BAGS;
+export const isWholesaleQuantity = (quantityInCartons: number): boolean => {
+  return quantityInCartons >= WHOLESALE_THRESHOLD_CARTONS;
 };
 
 /**
- * Convert quantity from any unit to bags
- * تحويل الكمية من أي وحدة إلى أكياس
+ * Convert quantity to base units (cartons)
+ * تحويل الكمية إلى الوحدة الأساسية (كراتين)
  */
-export const convertToBags = (quantity: number, unitId: UnitId): number => {
+export const convertToCartons = (quantity: number, unitId: UnitId): number => {
   const unit = UNITS[unitId];
   return quantity * unit.factor;
 };
 
 /**
- * Convert quantity from bags to any unit
- * تحويل الكمية من أكياس إلى أي وحدة
+ * Convert quantity from cartons to any unit
+ * تحويل الكمية من كراتين إلى أي وحدة
  */
-export const convertFromBags = (bagsQuantity: number, targetUnitId: UnitId): number => {
+export const convertFromCartons = (cartonsQuantity: number, targetUnitId: UnitId): number => {
   const unit = UNITS[targetUnitId];
-  return bagsQuantity / unit.factor;
+  return cartonsQuantity / unit.factor;
 };
 
 /**
@@ -211,8 +203,8 @@ export const calculateTotalPrice = (
   unitId: UnitId
 ): number => {
   const variant = PRODUCT_VARIANTS[variantId];
-  const quantityInBags = convertToBags(quantity, unitId);
-  return variant.pricePerBag * quantityInBags;
+  const quantityInCartons = convertToCartons(quantity, unitId);
+  return variant.pricePerCarton * quantity;
 };
 
 /**
@@ -225,8 +217,8 @@ export const calculateTotalCups = (
   unitId: UnitId
 ): number => {
   const variant = PRODUCT_VARIANTS[variantId];
-  const quantityInBags = convertToBags(quantity, unitId);
-  return quantityInBags * variant.cupsPerBag;
+  const quantityInCartons = convertToCartons(quantity, unitId);
+  return quantity * variant.cupsPerCarton;
 };
 
 /**
@@ -257,21 +249,21 @@ export const formatPrice = (price: number): string => {
  * Check if free delivery applies to the order
  * التحقق من إمكانية التوصيل المجاني للطلب
  */
-export const isFreeDeliveryEligible = (quantityInBags: number): boolean => {
+export const isFreeDeliveryEligible = (quantityInCartons: number): boolean => {
   return DELIVERY_POLICY.freeDeliveryEnabled && 
-         quantityInBags >= DELIVERY_POLICY.freeDeliveryThreshold;
+         quantityInCartons >= DELIVERY_POLICY.freeDeliveryThreshold;
 };
 
 /**
  * Get pricing tier message in Arabic
  * الحصول على رسالة نوع السعر بالعربية
  */
-export const getPricingTierMessage = (quantityInBags: number): string => {
-  const tier = getPricingTier(quantityInBags);
+export const getPricingTierMessage = (quantityInCartons: number): string => {
+  const tier = getPricingTier(quantityInCartons);
   if (tier.id === 'wholesale') {
-    return `سعر الجملة - الكمية: ${quantityInBags} كيس`;
+    return `سعر الجملة - الكمية: ${quantityInCartons} كرتون`;
   }
-  return `سعر نصف الجملة - الكمية: ${quantityInBags} كيس`;
+  return `سعر نصف الجملة - الكمية: ${quantityInCartons} كرتون`;
 };
 
 /**
@@ -336,9 +328,9 @@ export const validateOrder = (
   }
 
   // Add wholesale warning
-  const quantityInBags = unit ? convertToBags(quantity, unitId as UnitId) : 0;
-  if (quantityInBags > 0 && quantityInBags < WHOLESALE_THRESHOLD_BAGS) {
-    result.warnings.push(`Order ${WHOLESALE_THRESHOLD_BAGS - quantityInBags} more bags to qualify for wholesale pricing`);
+  const quantityInCartons = unit ? convertToCartons(quantity, unitId as UnitId) : 0;
+  if (quantityInCartons > 0 && quantityInCartons < WHOLESALE_THRESHOLD_CARTONS) {
+    result.warnings.push(`Order ${WHOLESALE_THRESHOLD_CARTONS - quantityInCartons} more cartons to qualify for wholesale pricing`);
   }
 
   return result;
