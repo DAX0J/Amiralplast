@@ -232,35 +232,20 @@ export default function OrderForm() {
                           مطلوب
                         </motion.span>
                       </FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <motion.div
-                            whileFocus={{ scale: 1.02, boxShadow: "0 8px 25px rgba(220, 38, 38, 0.15)" }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <SelectTrigger 
-                              className="form-field text-lg h-14 rounded-2xl border-2 font-arabic bg-gradient-to-r from-white to-warm-beige/5 hover:from-warm-beige/10 hover:to-white transition-all duration-300 hover:shadow-lg"
-                              data-testid="select-wilaya"
-                            >
-                              <SelectValue placeholder="اختر ولايتك للتوصيل السريع 🚚" />
-                            </SelectTrigger>
-                          </motion.div>
-                        </FormControl>
-                        <SelectContent className="font-arabic max-h-60">
-                          {WILAYAS.map((wilaya, index) => (
-                            <motion.div
-                              key={wilaya}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: index * 0.02 }}
-                            >
-                              <SelectItem value={wilaya} className="font-arabic hover:bg-warm-beige/20 transition-colors">
-                                {wilaya}
-                              </SelectItem>
-                            </motion.div>
+                      <FormControl>
+                        <Select 
+                          onValueChange={field.onChange} 
+                          defaultValue={field.value}
+                          data-testid="select-wilaya"
+                        >
+                          <option value="" disabled>اختر ولايتك للتوصيل السريع 🚚</option>
+                          {WILAYAS.map((wilaya) => (
+                            <option key={wilaya} value={wilaya}>
+                              {wilaya}
+                            </option>
                           ))}
-                        </SelectContent>
-                      </Select>
+                        </Select>
+                      </FormControl>
                       <FormMessage className="text-primary-red font-arabic" />
                     </FormItem>
                   )}
@@ -322,35 +307,20 @@ export default function OrderForm() {
                           اختر النوع
                         </motion.span>
                       </FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <motion.div
-                            whileFocus={{ scale: 1.02, boxShadow: "0 8px 25px rgba(220, 38, 38, 0.15)" }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <SelectTrigger 
-                              className="form-field text-lg h-14 rounded-2xl border-2 font-arabic bg-gradient-to-r from-white to-warm-beige/5 hover:from-warm-beige/10 hover:to-white transition-all duration-300 hover:shadow-lg"
-                              data-testid="select-cupType"
-                            >
-                              <SelectValue placeholder="اختر نوع كؤوس الحجامة المناسب لك" />
-                            </SelectTrigger>
-                          </motion.div>
-                        </FormControl>
-                        <SelectContent className="font-arabic max-h-60">
-                          {availableVariants.map((variant, index) => (
-                            <motion.div
-                              key={variant.id}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: index * 0.02 }}
-                            >
-                              <SelectItem value={variant.id} className="font-arabic hover:bg-warm-beige/20 transition-colors">
-                                {variant.nameArabic} - {formatPrice(variant.pricePerCarton)}
-                              </SelectItem>
-                            </motion.div>
+                      <FormControl>
+                        <Select 
+                          onValueChange={field.onChange} 
+                          defaultValue={field.value}
+                          data-testid="select-cupType"
+                        >
+                          <option value="" disabled>اختر نوع كؤوس الحجامة المناسب لك</option>
+                          {availableVariants.map((variant) => (
+                            <option key={variant.id} value={variant.id}>
+                              {variant.nameArabic} - {formatPrice(variant.pricePerCarton)}
+                            </option>
                           ))}
-                        </SelectContent>
-                      </Select>
+                        </Select>
+                      </FormControl>
                       <FormMessage className="text-primary-red font-arabic" />
                     </FormItem>
                   )}
